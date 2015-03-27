@@ -382,7 +382,7 @@ void obstacle_sim_return_angle(float vv[],int *n){
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 /*SIMULATION END*/
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-/*TOMAS FUNCTION SIMS*/
+/*TAMAS FUNCTION SIMS*/
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
 void request_arena_coord(float *coord){
@@ -425,7 +425,7 @@ int wp_status(){
 }
 
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-/*TOMAS FUNCTIONS END*/
+/*TAMAS FUNCTIONS END*/
 /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 void set_discrete_wp(int i, int j, float orient){
     vec2d wp;
