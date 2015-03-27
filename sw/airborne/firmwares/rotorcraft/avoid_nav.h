@@ -13,7 +13,7 @@ float mav_xy[2];
 #define OBS_SLOTS 10
 #define GRID_RES 20
 #define TRACKING_LIMIT 2
-#define MAXERROR 1
+#define MAXERROR 0.3
 #define MAXSCORE 100
 #define EXPSCORE 3
 #define STRSCORE 0
@@ -109,3 +109,11 @@ Vehicle v_sim;
 
 void init_map();
 void navigate();
+void vehicle_sim();
+void vehicle_sim_init();
+void vehicle_cache_init();
+void obstacle_sim_init();
+
+void print_vec2d(vec2d v); 
+void print2darr_float(float* a,int n, int m);
+void printarr_float(float a[],int n);
