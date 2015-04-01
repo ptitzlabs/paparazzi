@@ -1,7 +1,7 @@
 <!DOCTYPE flight_plan SYSTEM "flight_plan.dtd">
 
 <!-- If the origin of the fligth plan is not correct, change the lat0 en lon0 coordinates -->
-<flight_plan alt="0.5" ground_alt="0" lat0="51.990634" lon0="4.376771" max_dist_from_home="15" name="bluetooth_avoid_drone" security_height="0.1">
+<flight_plan alt="0.5" ground_alt="0" lat0="51.990634" lon0="4.376771" max_dist_from_home="15" name="avoid_drone" security_height="0.1">
   <header>
 #include "autopilot.h"
 </header>

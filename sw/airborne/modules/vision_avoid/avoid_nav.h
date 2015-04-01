@@ -18,7 +18,7 @@
 #include <sys/time.h>
 
 //#define AVOID_NAV_DEBUG
-#define AVOID_NAV_DEBUG_DOWNLINK_SIZE 10
+/*#define AVOID_NAV_DEBUG_DOWNLINK_SIZE 10*/
 
 #ifdef AVOID_NAV_DEBUG
   extern float nav_debug_downlink[AVOID_NAV_DEBUG_DOWNLINK_SIZE];
@@ -38,9 +38,9 @@ float mav_xy[2];
 #define OBS_SLOTS 100
 #define GRID_RES 20
 /*Tracker settings*/
-#define TRACKING_LIMIT 0.1 
+#define TRACKING_LIMIT 0.2
 /*Detection thresholds*/
-#define MAXERROR 0.5
+#define MAXERROR 0.8
 #define MIN_PARALLAX 0.0
 #define MIN_SPREAD 0.2
 /*Grid weights settings */
@@ -51,15 +51,16 @@ float mav_xy[2];
 
 #define PLAN_AHEAD
 #define PLAN_AHEADP1
+#define W_PREDICT 0.75
 
 #define WEIGHTS_NORMALIZED
 
 #ifdef WEIGHTS_NORMALIZED
 #define WEIGHT_MAX 20.0
-#define WEIGHT_INCR 1.0
+#define WEIGHT_INCR 2.0
 #define WEIGHT_BASE 10.0
 
-#define WP_MINDIST 0.7
+#define WP_MINDIST 0.5
 
 
 float sig_tmp;

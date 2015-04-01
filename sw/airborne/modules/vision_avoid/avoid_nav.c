@@ -756,7 +756,7 @@ void plan_ahead(int i_loc, int j_loc, int head,float *q){
            j_tmp>=0&&j_tmp<GRID_RES){
 #ifdef PLANAHEADP1 
             plan_aheadp1(i_tmp,j_tmp,i,&q_ahead);
-            *q = arena.grid_weights_exp[i_tmp*GRID_RES+j_tmp]+arena.grid_weights_obs[i_tmp*GRID_RES+j_tmp]+arena.scores[8+i-head]+q_ahead;
+            *q = arena.grid_weights_exp[i_tmp*GRID_RES+j_tmp]+arena.grid_weights_obs[i_tmp*GRID_RES+j_tmp]+arena.scores[8+i-head]+W_PREDICT*q_ahead;
 #else
 
             *q = arena.grid_weights_exp[i_tmp*GRID_RES+j_tmp]+arena.grid_weights_obs[i_tmp*GRID_RES+j_tmp]+arena.scores[8+i-head];
@@ -791,7 +791,7 @@ void plan_action(int i_loc, int j_loc, int head,int *best,float *q){
            j_tmp>=0&&j_tmp<GRID_RES){
 #ifdef PLAN_AHEAD
             plan_ahead(i_tmp,j_tmp,i,&q_ahead);
-            *q = arena.grid_weights_exp[i_tmp*GRID_RES+j_tmp]+arena.grid_weights_obs[i_tmp*GRID_RES+j_tmp]+arena.scores[8+i-head]+q_ahead;
+            *q = arena.grid_weights_exp[i_tmp*GRID_RES+j_tmp]+arena.grid_weights_obs[i_tmp*GRID_RES+j_tmp]+arena.scores[8+i-head]+W_PREDICT*q_ahead;
 #else
 
             plan_ahead(i_tmp,j_tmp,i,&q_ahead);

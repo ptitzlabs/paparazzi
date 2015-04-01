@@ -65,7 +65,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 
 #define AVOID_BASED_ON_COLOR
-//#define WITH_NAVIGATION
+#define WITH_NAVIGATION
 #define WITH_BINARY_IMAGE
 
 //#define USE_HARRIS_DETECTOR
