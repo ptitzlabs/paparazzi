@@ -55,7 +55,7 @@
 #include "opticflow/optic_flow_int.h"
 
 // for FPS
-#include "modules/computer_vision/cv/framerate.h"
+#include "../cv/framerate.h"
 
 // Avoidance headers
 #include "../avoid_nav_transportFcns.h"
@@ -238,12 +238,22 @@ else
 */
   // Corner Tracking
   // Working Variables
-
+/*
 if(printfCounter>10)
 {  printfCounter = 0; }
 else
   ++printfCounter;
-test_angles(); 
+test_angles(); */
+
+
+if(printfCounter>10)
+{  
+  printfCounter = 0; 
+  saveMap();
+}
+else
+  ++printfCounter;
+
 #ifndef AVOID_BASED_ON_COLOR
   int borderx = 24, bordery = 24;
   int x[MAX_FEATURE_COUNT], y[MAX_FEATURE_COUNT];
@@ -497,22 +507,21 @@ test_angles();
   { 
     int nS = w*2;
 #ifdef AVOID_NAV_DEBUG
-    unsigned char txBuf[nS+AVOID_NAV_DEBUG_DOWNLINK_SIZE*sizeof(float)]
+    unsigned char txBuf[nS+AVOID_NAV_DEBUG_DOWNLINK_SIZE*sizeof(float)];
 #else
-    unsigned char txBuf[nS]
+    unsigned char txBuf[nS];
 #endif
-;
-    for (int i=0; i < w; ++i)
+    for (int l=0; l < w; ++l)
     {
-      float V = (100.0f*flowSum[i]);
+      float V = (100.0f*flowSum[l]);
       int16_t Vi = ((int16_t)V);
-      txBuf[i] = ((unsigned char)Vi);
+      txBuf[l] = ((unsigned char)Vi);
 
 
-      if (flowSum[i] > PEAKDETECTOR_THRESHOLD)
-        txBuf[i+w] = 100;
+      if (flowSum[l] > PEAKDETECTOR_THRESHOLD)
+        txBuf[l+w] = 100;
       else
-        txBuf[i+w] = 0;
+        txBuf[l+w] = 0;
     }
 #ifdef AVOID_NAV_DEBUG
     memcpy(&txBuf+nS, &nav_debug_downlink, AVOID_NAV_DEBUG_DOWNLINK_SIZE*sizeof(float));
@@ -524,16 +533,16 @@ test_angles();
 #endif
   }
   {
-    unsigned char obsMap[GRID_RES*GRID_RES*2];
+    unsigned char obsMapFile[GRID_RES*GRID_RES*2];
 
     for (int i=0; i < GRID_RES*GRID_RES; ++i)
-      obsMap[i] = (unsigned char)(arena.grid_weights_obs[i]*2);
+      obsMapFile[i] = (unsigned char)(arena.grid_weights_obs[i]*2);
 
     for (int i=0; i < GRID_RES*GRID_RES; ++i)
-      obsMap[i+(GRID_RES*GRID_RES)] = (unsigned char)(arena.grid_weights_exp[i]*10);
+      obsMapFile[i+(GRID_RES*GRID_RES)] = (unsigned char)(arena.grid_weights_exp[i]*10);
 
 
-    if (udp_write(flowSock, (unsigned char*)&obsMap, GRID_RES*GRID_RES*2) != GRID_RES*GRID_RES*2)
+    if (udp_write(flowSock, (unsigned char*)&obsMapFile, GRID_RES*GRID_RES*2) != GRID_RES*GRID_RES*2)
       V_LOG("UDP map write error! ");
   }
 #endif
@@ -660,7 +669,70 @@ void ImResizeUYVU(unsigned char *output, int imWOut, int imHOut, unsigned char *
   }
 }
 
+unsigned char saveEnabled = 0;;
+FILE  *obsMapFile;
+FILE  *expMapFile;
+
+struct timeval map_time1;
+struct timeval map_time2;
+struct timeval *mapLastTime;
+struct timeval *mapCurrentTime;
+
+#define OBS_FILE_PATH ""
+#define EXP_FILE_PATH ""
+
+void   initMapSaveFile(void)
+{
+  obsMapFile = fopen(OBS_FILE_PATH, "w");
+  if (obsMapFile == NULL)
+  {
+    printf("Error opening obsMap!\n");
+    exit(1);
+  }
+  expMapFile = fopen(EXP_FILE_PATH, "w");
+  if (expMapFile == NULL)
+  {
+    printf("Error opening expMap!\n");
+    exit(1);
+  }
+
+  fprintf(obsMapFile, "%d %d\n",GRID_RES,GRID_RES);
+  fprintf(expMapFile, "%d %d\n",GRID_RES,GRID_RES);
+
+  gettimeofday(mapLastTime, NULL);
+  saveEnabled = 1;
+}
+void   saveMap(void)
+{
+  if (!saveEnabled)
+    return;
+
+    gettimeofday(mapCurrentTime, NULL);
+    float dt = ( ((float)time_elapsed(mapLastTime, mapCurrentTime))/1000000); // time_elapsed is (long) in microseconds
+
+    fprintf(obsMapFile, "%.3f ", dt);
+    for (int i=0; i < GRID_RES*GRID_RES; ++i)
+      fprintf(obsMapFile, "%.2f ", arena.grid_weights_obs[i]);
+
+    fprintf(obsMapFile, "\n");
 
 
 
+    fprintf(expMapFile, "%.3f ", dt);
+    for (int i=0; i < GRID_RES*GRID_RES; ++i)
+      fprintf(expMapFile, "%.2f ", arena.grid_weights_exp[i]);
 
+    fprintf(expMapFile, "\n");
+
+//      obsMapFile[i+(GRID_RES*GRID_RES)] = (unsigned char)(*10);
+
+  struct timeval *tmp = mapLastTime;
+  mapLastTime         = mapCurrentTime;
+  mapCurrentTime      = tmp;
+}
+void closeMap(void)
+{
+  saveEnabled = 0;
+  fclose(obsMapFile);
+  fclose(expMapFile);
+}

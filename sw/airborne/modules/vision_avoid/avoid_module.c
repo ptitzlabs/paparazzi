@@ -42,6 +42,9 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
+//For saving the obstacle map
+#include "opticflow/visual_estimator.h"
+
 int cv_sockets[2];
 
 // Paparazzi Data
@@ -185,11 +188,16 @@ void opticflow_module_stop(void)
 {
   computervision_thread_request_exit();
 }
-
+bool stopMapRecording(void)
+{
+  closeMap();
+  return false;
+}
 bool avoid_module_post_ahrs_init(void)
 {
   init_map();
   vehicle_cache_init();
+  initMapSaveFile();
   avoid_nav_init = 1;
   return true;
 }
@@ -287,6 +295,3 @@ bool_t avoid_map_init(void) {
     
     return FALSE;
 }
-
-//////////////////////////////////////////////////////////////////////////////
-/////////// DEBUG!!!

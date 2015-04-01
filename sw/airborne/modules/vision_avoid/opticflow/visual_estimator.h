@@ -60,6 +60,13 @@ struct visual_estimator_struct
  * @param w  image width
  * @param h  image height
  */
+
+
+extern unsigned char saveEnabled;
+extern void   initMapSaveFile(void);
+extern void   saveMap(void);
+extern void   closeMap(void);
+
 extern void opticflow_plugin_init(unsigned int w, unsigned int h, struct CVresults *results);
 extern void opticflow_plugin_free(void);
 

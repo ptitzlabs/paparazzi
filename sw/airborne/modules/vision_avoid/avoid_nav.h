@@ -1,3 +1,6 @@
+#ifndef AVOID_NAV_H
+#define AVOID_NAV_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -232,4 +235,4 @@ extern void  nav_print_full_report(void);
     /*void print_vec2d(vec2d v); */
     /*void print2darr_float(float* a,int n, int m);*/
     /*void printarr_float(float a[],int n);*/
-
+#endif

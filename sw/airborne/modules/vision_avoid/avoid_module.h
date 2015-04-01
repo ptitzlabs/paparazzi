@@ -53,9 +53,9 @@ extern bool avoid_module_post_ahrs_init(void);
 extern bool vision_avoid_update_WP(uint8_t wpID);
 extern bool markArenaLimsAsWp(uint8_t wpIndex);
 
-//////////////////////////////////DEBUG
-extern bool bang1(void);
-extern bool bang2(void);
-extern bool n_print_output(void);
+////////////////////////////////////////////
+// Save map
+extern bool stopMapRecording(void);
+
 
 #endif /* OPTICFLOW_MODULE_H */

@@ -70,6 +70,9 @@
     <block name="Vision Navigate">
       <call fun="vision_avoid_update_WP(WP_VA)" />
     </block>
+    <block name="Stop Map Recording">
+      <call fun="stopMapRecording()" />
+    </block>
     <block name="land here" strip_button="Land Here" strip_icon="land-right.png">
       <call fun="NavSetWaypointHere(WP_TD)"/>
     </block>
